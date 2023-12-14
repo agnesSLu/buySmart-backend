@@ -9,7 +9,8 @@ export default withAuth(
 
     if (url.startsWith("/api")) {
       NextResponse.next().headers.append("Access-Control-Allow-Origin", process.env.API_URL);
-      NextResponse.next().headers.append("Access-Control-Allow-Headers", process.env.API_URL)
+      NextResponse.next().headers.append("Access-Control-Allow-Headers", process.env.API_URL);
+      NextResponse.next().headers.append('Access-Control-Allow-Credentials', 'true');
     }
 
     if (url?.startsWith("/admin") && userRole !== "admin") {
