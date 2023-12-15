@@ -8,15 +8,18 @@ export default withAuth(
     const userRole = req?.nextauth?.token?.user?.role;
 
     if (url.startsWith("/api")) {
-      NextResponse.next().headers.append("Access-Control-Allow-Origin", process.env.API_URL);
-      NextResponse.next().headers.append("Access-Control-Allow-Headers", process.env.API_URL);
-      NextResponse.next().headers.append('Access-Control-Allow-Credentials', 'true');
-    }
+      const response = NextResponse.next();
+      response.headers.append("Access-Control-Allow-Origin", process.env.API_URL);
+      response.headers.append("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE");
+      response.headers.append("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With");
+      response.headers.append('Access-Control-Allow-Credentials', 'true');
 
-    if (req.method === 'OPTIONS') {
-      NextResponse.next().status(200).end();
-    }
+      if (req.method === 'OPTIONS') {
+        response.status(200).end();
+      }  
 
+      return response;
+    }
 
     if (url?.startsWith("/admin") && userRole !== "admin") {
       return NextResponse.redirect(new URL("/", req.url));
