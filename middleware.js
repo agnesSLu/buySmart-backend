@@ -13,6 +13,11 @@ export default withAuth(
       NextResponse.next().headers.append('Access-Control-Allow-Credentials', 'true');
     }
 
+    if (req.method === 'OPTIONS') {
+      NextResponse.next().status(200).end();
+    }
+
+
     if (url?.startsWith("/admin") && userRole !== "admin") {
       return NextResponse.redirect(new URL("/", req.url));
     }
@@ -29,5 +34,5 @@ export default withAuth(
 );
 
 export const config = {
-  matcher: ["/admin/:path*", "/me/:path*", "/shipping"],
+  matcher: ["/admin/:path*", "/me/:path*", "/shipping", , "/api/:path*"],
 };
